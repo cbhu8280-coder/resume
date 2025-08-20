@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iQlipse - Shop Everything</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Amazon Ember', Arial, sans-serif;
+            background-color: #eaeded;
+        }
+
+        /* Header */
+        .header {
+            background-color: #131921;
+            color: white;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff9900;
+            text-decoration: none;
+            padding: 8px;
+        }
+
+        .logo:hover {
+            border: 1px solid white;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .location:hover {
+            border: 1px solid white;
+        }
+
+        .search-bar {
+            flex: 1;
+            display: flex;
+            max-width: 800px;
+        }
+
+        .search-dropdown {
+            background-color: #f3f3f3;
+            border: none;
+            padding: 12px;
+            border-radius: 4px 0 0 4px;
+            color: #333;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .search-btn {
+            background-color: #febd69;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .search-btn:hover {
+            background-color: #f3a847;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            border: 1px solid white;
+        }
+
+        .cart {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff9900;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background-color: #232f3e;
+            padding: 8px 16px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            border: 1px solid white;
+        }
+
+        /* Main Content */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            background-color: #ff9900;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #e88800;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Product Grid */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .stars {
+            color: #ffa500;
+            font-size: 14px;
+        }
+
+        .rating-count {
+            color: #007185;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #B12704;
+            margin-bottom: 10px;
+        }
+
+        .old-price {
+            color: #565959;
+            text-decoration: line-through;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .add-to-cart {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #e88800;
+        }
+
+        /* Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .category-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #232f3e;
+            color: white;
+            padding: 40px 20px 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #ddd;
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .cart-modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+
+        .close-cart {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            margin-right: 15px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #B12704;
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .quantity-btn {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .remove-item {
+            color: #007185;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .cart-total {
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+        }
+
+        .total-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #B12704;
+        }
+
+        .checkout-btn {
+            background-color: #ffd814;
+            border: 1px solid #fcd200;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .search-bar {
+                order: 3;
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+            }
+
+            .nav-links {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            display: none;
+            z-index: 3000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <a href="#" class="logo">iQlipse</a>
+            
+            <div class="location">
+                <span>📍 Deliver to<br><strong>Your Location</strong></span>
+            </div>
+            
+            <div class="search-bar">
+                <select class="search-dropdown">
+                    <option>All</option>
+                    <option>Electronics</option>
+                    <option>Books</option>
+                    <option>Fashion</option>
+                    <option>Home & Garden</option>
+                </select>
+                <input type="text" class="search-input" placeholder="Search products...">
+                <button class="search-btn">🔍</button>
+            </div>
+            
+            <div class="nav-right">
+                <a href="#" class="nav-item">🌐 EN</a>
+                <a href="#" class="nav-item">👤 Sign In<br><strong>Account & Lists</strong></a>
+                <a href="#" class="nav-item">📦 Returns<br><strong>& Orders</strong></a>
+                <div class="cart nav-item" onclick="toggleCart()">
+                    🛒 Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="nav-bar">
+            <div class="nav-links">
+                <a href="#">📱 All</a>
+                <a href="#">🔥 Today's Deals</a>
+                <a href="#">🏆 Best Sellers</a>
+                <a href="#">🎯 Customer Service</a>
+                <a href="#">📚 Books</a>
+                <a href="#">👕 Fashion</a>
+                <a href="#">🏠 Home & Garden</a>
+                <a href="#">🎮 Electronics</a>
+                <a href="#">🎁 Gift Cards</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Welcome to iQlipse</h1>
+        <p>Discover millions of products at unbeatable prices</p>
+        <a href="#products" class="cta-button">Shop Now</a>
+    </section>
+
+    <div class="container">
+        <!-- Categories -->
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="categories">
+            <div class="category-card" onclick="filterProducts('electronics')">
+                <div class="category-icon">💻</div>
+                <div class="category-name">Electronics</div>
+            </div>
+            <div class="category-card" onclick="filterProducts('books')">
+                <div class="category-icon">📚</div>
+                <div class="category-name">Books</div>
+            </div>
+            <div class="category-card" onclick="filterProducts('fashion')">
+                <div class="category-icon">👕</div>
+                <div class="category-name">Fashion</div>
+            </div>
+            <div class="category-card" onclick="filterProducts('home')">
+                <div class="category-icon">🏠</div>
+                <div class="category-name">Home & Garden</div>
+            </div>
+            <div class="category-card" onclick="filterProducts('sports')">
+                <div class="category-icon">⚽</div>
+                <div class="category-name">Sports</div>
+            </div>
+            <div class="category-card" onclick="filterProducts('beauty')">
+                <div class="category-icon">💄</div>
+                <div class="category-name">Beauty</div>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <h2 class="section-title" id="products">Featured Products</h2>
+        <div class="product-grid" id="productGrid">
+            <!-- Products will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-modal-content">
+            <div class="cart-header">
+                <h2>Shopping Cart</h2>
+                <span class="close-cart" onclick="toggleCart()">&times;</span>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-total">
+                <div class="total-price" id="cartTotal">Total: $0.00</div>
+                <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Get to Know Us</h3>
+                <a href="#">About iQlipse</a>
+                <a href="#">Careers</a>
+                <a href="#">Press Releases</a>
+                <a href="#">Investor Relations</a>
+            </div>
+            <div class="footer-section">
+                <h3>Make Money with Us</h3>
+                <a href="#">Sell on iQlipse</a>
+                <a href="#">Become an Affiliate</a>
+                <a href="#">Advertise Your Products</a>
+                <a href="#">Self-Publish with Us</a>
+            </div>
+            <div class="footer-section">
+                <h3>iQlipse Payment Products</h3>
+                <a href="#">iQlipse Rewards Visa</a>
+                <a href="#">iQlipse Store Card</a>
+                <a href="#">iQlipse Business Card</a>
+                <a href="#">Shop with Points</a>
+            </div>
+            <div class="footer-section">
+                <h3>Let Us Help You</h3>
+                <a href="#">Your Account</a>
+                <a href="#">Your Orders</a>
+                <a href="#">Shipping Rates & Policies</a>
+                <a href="#">Returns & Replacements</a>
+                <a href="#">Help</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 iQlipse.com, Inc. or its affiliates</p>
+        </div>
+    </footer>
+
+    <script>
+        // Product data
+        const products = [
+            {
+                id: 1,
+                title: "Wireless Bluetooth Headphones - Premium Sound Quality",
+                price: 79.99,
+                oldPrice: 129.99,
+                rating: 4.5,
+                reviews: 2834,
+                category: "electronics",
+                image: "🎧"
+            },
+            {
+                id: 2,
+                title: "Smart Fitness Tracker with Heart Rate Monitor",
+                price: 49.99,
+                oldPrice: 79.99,
+                rating: 4.3,
+                reviews: 1567,
+                category: "electronics",
+                image: "⌚"
+            },
+            {
+                id: 3,
+                title: "Bestselling Mystery Novel - Page Turner",
+                price: 14.99,
+                oldPrice: 24.99,
+                rating: 4.7,
+                reviews: 892,
+                category: "books",
+                image: "📖"
+            },
+            {
+                id: 4,
+                title: "Premium Cotton T-Shirt - Comfortable Fit",
+                price: 19.99,
+                oldPrice: 35.99,
+                rating: 4.2,
+                reviews: 423,
+                category: "fashion",
+                image: "👕"
+            },
+            {
+                id: 5,
+                title: "Portable Phone Charger - 10000mAh Power Bank",
+                price: 25.99,
+                oldPrice: 39.99,
+                rating: 4.4,
+                reviews: 1203,
+                category: "electronics",
+                image: "🔋"
+            },
+            {
+                id: 6,
+                title: "Luxury Scented Candle Set - 3 Pack",
+                price: 34.99,
+                oldPrice: 54.99,
+                rating: 4.6,
+                reviews: 756,
+                category: "home",
+                image: "🕯"
+            },
+            {
